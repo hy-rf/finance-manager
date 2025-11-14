@@ -597,7 +597,7 @@
             const valText = fmt(val);
             ctx.fillText(
               valText,
-              pad + w + 8 * devicePixelRatio,
+              pad + width - 13 * valText.length,
               y + (barH / 2 + 4 * devicePixelRatio)
             );
             y += barH * 1.4;
