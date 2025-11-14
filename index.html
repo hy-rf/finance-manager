@@ -1,353 +1,747 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Monthly Cost - Personal Finance Manager (Single File)</title>
-  <style>
-    :root{--bg:#0f1724;--card:#0b1220;--accent:#60a5fa;--muted:#9ca3af;--success:#10b981}
-    *{box-sizing:border-box}
-    body{font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial; margin:0; background:linear-gradient(180deg,#071025 0%, #071428 100%); color:#e6eef8;}
-    .container{max-width:1100px;margin:28px auto;padding:20px}
-    header{display:flex;gap:16px;align-items:center;margin-bottom:18px}
-    header h1{font-size:20px;margin:0}
-    .grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
-    .card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6);}
-    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
-    input,select,button,textarea{width:100%;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;font-size:14px}
-    .row{display:flex;gap:8px}
-    .row > *{flex:1}
-    .small{width:110px}
-    button{cursor:pointer;border:none;background:var(--accent);color:#022; font-weight:600}
-    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);font-weight:500}
-    .stats{display:flex;gap:10px;margin-bottom:10px}
-    .stat{flex:1;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:10px;border-radius:10px}
-    .stat h3{margin:0;font-size:18px}
-    table{width:100%;border-collapse:collapse;font-size:13px}
-    th,td{padding:8px;text-align:left;border-bottom:1px dashed rgba(255,255,255,0.02)}
-    th{color:var(--muted);font-weight:600}
-    .list-small{max-height:230px;overflow:auto;margin-top:8px}
-    .flex-between{display:flex;justify-content:space-between;align-items:center}
-    .tag{display:inline-block;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.03);font-size:12px}
-    .controls{display:flex;gap:8px;align-items:center}
-    footer{margin-top:18px;color:var(--muted);font-size:13px}
-    @media (max-width:900px){.grid{grid-template-columns:1fr;}.small{width:auto}}
-  </style>
-</head>
-<body>
-  <div class="container">
-    <header>
-      <h1>Monthly Cost — Personal Finance Manager</h1>
-      <div style="margin-left:auto;color:var(--muted);font-size:13px">Single file · localStorage only · no external libs</div>
-    </header>
-
-    <div class="grid">
-      <main class="card">
-        <div class="flex-between">
-          <div>
-            <label for="monthPicker">Month</label>
-            <input id="monthPicker" type="month" />
-          </div>
-          <div style="min-width:220px">
-            <label for="currency">Currency</label>
-            <select id="currency">
-              <option value="$">USD ($)</option>
-              <option value="€">EUR (€)</option>
-              <option value="NT$">TWD (NT$)</option>
-              <option value="¥">CNY (¥)</option>
-            </select>
-          </div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Monthly Cost - Personal Finance Manager (Single File)</title>
+    <style>
+      :root {
+        --bg: #0f1724;
+        --card: #0b1220;
+        --accent: #60a5fa;
+        --muted: #9ca3af;
+        --success: #10b981;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: Inter, ui-sans-serif, system-ui, Segoe UI, Roboto,
+          Helvetica, Arial;
+        margin: 0;
+        background: linear-gradient(180deg, #071025 0%, #071428 100%);
+        color: #e6eef8;
+      }
+      .container {
+        max-width: 1100px;
+        margin: 28px auto;
+        padding: 20px;
+      }
+      header {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        margin-bottom: 18px;
+      }
+      header h1 {
+        font-size: 20px;
+        margin: 0;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 360px;
+        gap: 18px;
+      }
+      .card {
+        background: var(--card);
+        padding: 14px;
+        border-radius: 12px;
+        box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
+      }
+      label {
+        display: block;
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      input,
+      select,
+      button,
+      textarea {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        background: transparent;
+        color: inherit;
+        font-size: 14px;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+      }
+      .row > * {
+        flex: 1;
+      }
+      .small {
+        width: 110px;
+      }
+      button {
+        cursor: pointer;
+        border: none;
+        background: var(--accent);
+        color: #022;
+        font-weight: 600;
+      }
+      button.ghost {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        color: var(--muted);
+        font-weight: 500;
+      }
+      .stats {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .stat {
+        flex: 1;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.02),
+          transparent
+        );
+        padding: 10px;
+        border-radius: 10px;
+      }
+      .stat h3 {
+        margin: 0;
+        font-size: 18px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.02);
+      }
+      th {
+        color: var(--muted);
+        font-weight: 600;
+      }
+      .list-small {
+        max-height: 230px;
+        overflow: auto;
+        margin-top: 8px;
+      }
+      .flex-between {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .tag {
+        display: inline-block;
+        padding: 6px 8px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.03);
+        font-size: 12px;
+      }
+      .controls {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      footer {
+        margin-top: 18px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      @media (max-width: 900px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .small {
+          width: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Monthly Cost — Personal Finance Manager</h1>
+        <div style="margin-left: auto; color: var(--muted); font-size: 13px">
+          Single file · localStorage only · no external libs
         </div>
+      </header>
 
-        <section style="margin-top:12px">
-          <div class="stats">
-            <div class="stat"><div style="color:var(--muted);font-size:12px">Monthly Income</div><h3 id="totalIncome">—</h3></div>
-            <div class="stat"><div style="color:var(--muted);font-size:12px">Total Expenses</div><h3 id="totalExpenses">—</h3></div>
-            <div class="stat"><div style="color:var(--muted);font-size:12px">Balance</div><h3 id="balance">—</h3></div>
-          </div>
-        </section>
-
-        <section style="display:flex;gap:12px;flex-wrap:wrap">
-          <div style="flex:1;min-width:260px">
-            <h4 style="margin:6px 0 8px 0">Add expense</h4>
-            <div class="row">
-              <input id="expenseDate" type="date" />
-              <input id="expenseAmount" type="number" step="0.01" placeholder="amount" />
-            </div>
-            <div style="margin-top:8px" class="row">
-              <select id="expenseCategory"></select>
-              <input id="expenseNote" placeholder="note (optional)" />
-            </div>
-            <div style="margin-top:8px;display:flex;gap:8px">
-              <button id="addExpenseBtn">Add Expense</button>
-              <button id="addQuickBtn" class="ghost">Quick: -$10</button>
-            </div>
-          </div>
-
-          <div style="width:320px;min-width:220px">
-            <h4 style="margin:6px 0 8px 0">Manage categories</h4>
-            <div class="row">
-              <input id="newCategory" placeholder="New category" />
-              <button id="addCategoryBtn" class="ghost">Add</button>
-            </div>
-            <div class="list-small" id="categoriesList"></div>
-          </div>
-        </section>
-
-        <section style="margin-top:12px">
+      <div class="grid">
+        <main class="card">
           <div class="flex-between">
-            <h4 style="margin:6px 0">Expenses — <span id="monthLabel"></span></h4>
-            <div class="controls">
-              <button id="exportJSON" class="ghost">Export JSON</button>
-              <button id="importJSON" class="ghost">Import</button>
-              <button id="clearData" class="ghost">Reset</button>
-              <input type="file" id="fileInput" style="display:none" accept="application/json" />
+            <div>
+              <label for="monthPicker">Month</label>
+              <input id="monthPicker" type="month" />
+            </div>
+            <div style="min-width: 220px">
+              <label for="currency">Currency</label>
+              <select id="currency">
+                <option value="$">USD ($)</option>
+                <option value="€">EUR (€)</option>
+                <option value="NT$">TWD (NT$)</option>
+                <option value="¥">CNY (¥)</option>
+              </select>
             </div>
           </div>
 
-          <div style="overflow:auto;max-height:280px;margin-top:8px">
-            <table id="expensesTable">
-              <thead><tr><th>Date</th><th>Category</th><th>Note</th><th>Amount</th><th></th></tr></thead>
-              <tbody></tbody>
-            </table>
+          <section style="margin-top: 12px">
+            <div class="stats">
+              <div class="stat">
+                <div style="color: var(--muted); font-size: 12px">
+                  Monthly Income
+                </div>
+                <h3 id="totalIncome">—</h3>
+              </div>
+              <div class="stat">
+                <div style="color: var(--muted); font-size: 12px">
+                  Total Expenses
+                </div>
+                <h3 id="totalExpenses">—</h3>
+              </div>
+              <div class="stat">
+                <div style="color: var(--muted); font-size: 12px">Balance</div>
+                <h3 id="balance">—</h3>
+              </div>
+            </div>
+          </section>
+
+          <section style="display: flex; gap: 12px; flex-wrap: wrap">
+            <div style="flex: 1; min-width: 260px">
+              <h4 style="margin: 6px 0 8px 0">Add expense</h4>
+              <div class="row">
+                <input id="expenseDate" type="date" />
+                <input
+                  id="expenseAmount"
+                  type="number"
+                  step="0.01"
+                  placeholder="amount"
+                />
+              </div>
+              <div style="margin-top: 8px" class="row">
+                <select id="expenseCategory"></select>
+                <input id="expenseNote" placeholder="note (optional)" />
+              </div>
+              <div style="margin-top: 8px; display: flex; gap: 8px">
+                <button id="addExpenseBtn">Add Expense</button>
+                <button id="addQuickBtn" class="ghost">Quick: -$10</button>
+              </div>
+            </div>
+
+            <div style="width: 320px; min-width: 220px">
+              <h4 style="margin: 6px 0 8px 0">Manage categories</h4>
+              <div class="row">
+                <input id="newCategory" placeholder="New category" />
+                <button id="addCategoryBtn" class="ghost">Add</button>
+              </div>
+              <div class="list-small" id="categoriesList"></div>
+            </div>
+          </section>
+
+          <section style="margin-top: 12px">
+            <div class="flex-between">
+              <h4 style="margin: 6px 0">
+                Expenses — <span id="monthLabel"></span>
+              </h4>
+              <div class="controls">
+                <button id="exportJSON" class="ghost">Export JSON</button>
+                <button id="importJSON" class="ghost">Import</button>
+                <button id="clearData" class="ghost">Reset</button>
+                <input
+                  type="file"
+                  id="fileInput"
+                  style="display: none"
+                  accept="application/json"
+                />
+              </div>
+            </div>
+
+            <div style="overflow: auto; max-height: 280px; margin-top: 8px">
+              <table id="expensesTable">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Note</th>
+                    <th>Amount</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section
+            style="margin-top: 12px; display: flex; gap: 12px; flex-wrap: wrap"
+          >
+            <div style="flex: 1" class="card">
+              <h4 style="margin: 6px 0">Breakdown by category</h4>
+              <canvas
+                id="catChart"
+                width="600"
+                height="220"
+                style="width: 100%"
+              ></canvas>
+            </div>
+
+            <div style="width: 300px; min-width: 220px" class="card">
+              <h4 style="margin: 6px 0">Category totals</h4>
+              <div id="categoryTotals"></div>
+            </div>
+          </section>
+        </main>
+
+        <aside>
+          <div class="card">
+            <h3 style="margin-top: 0">Settings & Data</h3>
+            <label for="monthlyIncome">Set monthly income</label>
+            <input
+              id="monthlyIncome"
+              type="number"
+              step="0.01"
+              placeholder="0.00"
+            />
+            <div style="margin-top: 8px; display: flex; gap: 8px">
+              <button id="saveIncomeBtn">Save</button>
+              <button id="clearMonthBtn" class="ghost">Clear Month</button>
+            </div>
+
+            <hr
+              style="
+                margin: 12px 0;
+                border: none;
+                border-top: 1px dashed rgba(255, 255, 255, 0.03);
+              "
+            />
+
+            <h4 style="margin: 6px 0">Quick actions</h4>
+            <div style="display: flex; flex-direction: column; gap: 8px">
+              <button id="undoBtn" class="ghost">Undo last</button>
+              <button id="downloadCSV" class="ghost">Download CSV</button>
+            </div>
           </div>
-        </section>
 
-        <section style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap">
-          <div style="flex:1" class="card">
-            <h4 style="margin:6px 0">Breakdown by category</h4>
-            <canvas id="catChart" width="600" height="220" style="width:100%"></canvas>
+          <div style="height: 12px"></div>
+          <div class="card" style="text-align: center">
+            <div style="font-size: 13px; color: var(--muted)">
+              Data stored only in this browser (localStorage).
+            </div>
+            <div style="margin-top: 8px; color: var(--muted); font-size: 12px">
+              Tip: Export your data to back it up.
+            </div>
           </div>
+        </aside>
+      </div>
 
-          <div style="width:300px;min-width:220px" class="card">
-            <h4 style="margin:6px 0">Category totals</h4>
-            <div id="categoryTotals"></div>
-          </div>
-        </section>
-
-      </main>
-
-      <aside>
-        <div class="card">
-          <h3 style="margin-top:0">Settings & Data</h3>
-          <label for="monthlyIncome">Set monthly income</label>
-          <input id="monthlyIncome" type="number" step="0.01" placeholder="0.00" />
-          <div style="margin-top:8px;display:flex;gap:8px">
-            <button id="saveIncomeBtn">Save</button>
-            <button id="clearMonthBtn" class="ghost">Clear Month</button>
-          </div>
-
-          <hr style="margin:12px 0;border:none;border-top:1px dashed rgba(255,255,255,0.03)" />
-
-          <h4 style="margin:6px 0">Quick actions</h4>
-          <div style="display:flex;flex-direction:column;gap:8px">
-            <button id="undoBtn" class="ghost">Undo last</button>
-            <button id="downloadCSV" class="ghost">Download CSV</button>
-          </div>
-        </div>
-
-        <div style="height:12px"></div>
-        <div class="card" style="text-align:center">
-          <div style="font-size:13px;color:var(--muted)">Data stored only in this browser (localStorage).</div>
-          <div style="margin-top:8px;color:var(--muted);font-size:12px">Tip: Export your data to back it up.</div>
-        </div>
-      </aside>
+      <footer>
+        Built as a single-file app. You can save this page as
+        <code>finance.html</code> and open it in any browser.
+      </footer>
     </div>
 
-    <footer>Built as a single-file app. You can save this page as <code>finance.html</code> and open it in any browser.</footer>
-  </div>
+    <script>
+      // ---------------------- Data layer ----------------------
+      const STORAGE_KEY = "pfm_data_v1";
+      let db = {
+        income: 0,
+        currency: "$",
+        categories: ["Food", "Transport", "Housing", "Misc"],
+        expenses: [],
+      };
+      let undoStack = [];
 
-  <script>
-    // ---------------------- Data layer ----------------------
-    const STORAGE_KEY = 'pfm_data_v1';
-    let db = { income: 0, currency: '$', categories: ['Food','Transport','Housing','Misc'], expenses: [] };
-    let undoStack = [];
+      function load() {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          try {
+            db = JSON.parse(raw);
+          } catch (e) {
+            console.warn("corrupt storage, resetting");
+            save();
+          }
+        } else save();
+      }
+      function save(pushUndo = true) {
+        if (pushUndo) undoStack.push(JSON.stringify(db));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+        renderAll();
+      }
 
-    function load() {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        try { db = JSON.parse(raw); } catch(e){ console.warn('corrupt storage, resetting'); save(); }
-      } else save();
-    }
-    function save(pushUndo=true){
-      if (pushUndo) undoStack.push(JSON.stringify(db));
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
-      renderAll();
-    }
+      function resetAll() {
+        if (confirm("Erase all saved data?")) {
+          db = {
+            income: 0,
+            currency: "$",
+            categories: ["Food", "Transport", "Housing", "Misc"],
+            expenses: [],
+          };
+          save();
+          undoStack = [];
+        }
+      }
+      function clearMonth(monthISO) {
+        // monthISO like '2025-11'
+        if (!monthISO) return;
+        if (!confirm("Delete all expenses for " + monthISO + "?")) return;
+        db.expenses = db.expenses.filter((e) => !e.date.startsWith(monthISO));
+        save();
+      }
 
-    function resetAll(){ if(confirm('Erase all saved data?')){ db = { income:0, currency:'$', categories:['Food','Transport','Housing','Misc'], expenses:[] }; save(); undoStack=[] }}
-    function clearMonth(monthISO){ // monthISO like '2025-11'
-      if(!monthISO) return;
-      if(!confirm('Delete all expenses for '+monthISO+'?')) return;
-      db.expenses = db.expenses.filter(e => !e.date.startsWith(monthISO));
-      save();
-    }
+      // ---------------------- Utilities ----------------------
+      function fmt(amount) {
+        return (
+          (db.currency || "$") +
+          Number(amount).toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
+        );
+      }
+      function monthFromISO(iso) {
+        if (!iso) return "";
+        const [y, m] = iso.split("-");
+        const d = new Date(+y, +m - 1, 1);
+        return d.toLocaleString(undefined, { month: "long", year: "numeric" });
+      }
+      function uid() {
+        return Math.random().toString(36).slice(2, 9);
+      }
 
-    // ---------------------- Utilities ----------------------
-    function fmt(amount){return (db.currency||'$') + Number(amount).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}
-    function monthFromISO(iso){ if(!iso) return ''; const [y,m]=iso.split('-'); const d=new Date(+y,+m-1,1); return d.toLocaleString(undefined,{month:'long',year:'numeric'}); }
-    function uid(){return Math.random().toString(36).slice(2,9)}
+      // ---------------------- DOM bindings ----------------------
+      const monthPicker = document.getElementById("monthPicker");
+      const totalIncomeEl = document.getElementById("totalIncome");
+      const totalExpensesEl = document.getElementById("totalExpenses");
+      const balanceEl = document.getElementById("balance");
+      const expenseDate = document.getElementById("expenseDate");
+      const expenseAmount = document.getElementById("expenseAmount");
+      const expenseCategory = document.getElementById("expenseCategory");
+      const expenseNote = document.getElementById("expenseNote");
+      const addExpenseBtn = document.getElementById("addExpenseBtn");
+      const addQuickBtn = document.getElementById("addQuickBtn");
+      const newCategory = document.getElementById("newCategory");
+      const addCategoryBtn = document.getElementById("addCategoryBtn");
+      const categoriesList = document.getElementById("categoriesList");
+      const expensesTableBody = document.querySelector("#expensesTable tbody");
+      const catChart = document.getElementById("catChart");
+      const categoryTotals = document.getElementById("categoryTotals");
+      const monthlyIncome = document.getElementById("monthlyIncome");
+      const saveIncomeBtn = document.getElementById("saveIncomeBtn");
+      const clearMonthBtn = document.getElementById("clearMonthBtn");
+      const monthLabel = document.getElementById("monthLabel");
+      const currencySel = document.getElementById("currency");
+      const exportJSON = document.getElementById("exportJSON");
+      const importJSON = document.getElementById("importJSON");
+      const fileInput = document.getElementById("fileInput");
+      const clearData = document.getElementById("clearData");
+      const undoBtn = document.getElementById("undoBtn");
+      const downloadCSV = document.getElementById("downloadCSV");
 
-    // ---------------------- DOM bindings ----------------------
-    const monthPicker = document.getElementById('monthPicker');
-    const totalIncomeEl = document.getElementById('totalIncome');
-    const totalExpensesEl = document.getElementById('totalExpenses');
-    const balanceEl = document.getElementById('balance');
-    const expenseDate = document.getElementById('expenseDate');
-    const expenseAmount = document.getElementById('expenseAmount');
-    const expenseCategory = document.getElementById('expenseCategory');
-    const expenseNote = document.getElementById('expenseNote');
-    const addExpenseBtn = document.getElementById('addExpenseBtn');
-    const addQuickBtn = document.getElementById('addQuickBtn');
-    const newCategory = document.getElementById('newCategory');
-    const addCategoryBtn = document.getElementById('addCategoryBtn');
-    const categoriesList = document.getElementById('categoriesList');
-    const expensesTableBody = document.querySelector('#expensesTable tbody');
-    const catChart = document.getElementById('catChart');
-    const categoryTotals = document.getElementById('categoryTotals');
-    const monthlyIncome = document.getElementById('monthlyIncome');
-    const saveIncomeBtn = document.getElementById('saveIncomeBtn');
-    const clearMonthBtn = document.getElementById('clearMonthBtn');
-    const monthLabel = document.getElementById('monthLabel');
-    const currencySel = document.getElementById('currency');
-    const exportJSON = document.getElementById('exportJSON');
-    const importJSON = document.getElementById('importJSON');
-    const fileInput = document.getElementById('fileInput');
-    const clearData = document.getElementById('clearData');
-    const undoBtn = document.getElementById('undoBtn');
-    const downloadCSV = document.getElementById('downloadCSV');
+      // ---------------------- Render ----------------------
+      function renderAll() {
+        // sync UI fields
+        monthlyIncome.value = db.income || "";
+        currencySel.value = db.currency || "$";
 
-    // ---------------------- Render ----------------------
-    function renderAll(){
-      // sync UI fields
-      monthlyIncome.value = db.income || '';
-      currencySel.value = db.currency || '$';
+        // categories
+        expenseCategory.innerHTML = db.categories
+          .map((c) => `<option>${escapeHtml(c)}</option>`)
+          .join("");
+        categoriesList.innerHTML = db.categories
+          .map(
+            (c) =>
+              `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.02)"><div>${escapeHtml(
+                c
+              )}</div><div><button class='ghost' data-cat='${escapeHtml(
+                c
+              )}'>Del</button></div></div>`
+          )
+          .join("");
 
-      // categories
-      expenseCategory.innerHTML = db.categories.map(c=>`<option>${escapeHtml(c)}</option>`).join('');
-      categoriesList.innerHTML = db.categories.map(c=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.02)"><div>${escapeHtml(c)}</div><div><button class='ghost' data-cat='${escapeHtml(c)}'>Del</button></div></div>`).join('');
+        const selectedMonth =
+          monthPicker.value || new Date().toISOString().slice(0, 7);
+        monthLabel.textContent = monthFromISO(selectedMonth);
 
-      const selectedMonth = monthPicker.value || (new Date()).toISOString().slice(0,7);
-      monthLabel.textContent = monthFromISO(selectedMonth);
+        // totals
+        const monthExpenses = db.expenses.filter((e) =>
+          e.date.startsWith(selectedMonth)
+        );
+        const totalExpenses = monthExpenses.reduce(
+          (s, e) => s + Number(e.amount),
+          0
+        );
+        totalExpensesEl.textContent = fmt(totalExpenses);
+        totalIncomeEl.textContent = fmt(db.income || 0);
+        balanceEl.textContent = fmt((db.income || 0) - totalExpenses);
 
-      // totals
-      const monthExpenses = db.expenses.filter(e => e.date.startsWith(selectedMonth));
-      const totalExpenses = monthExpenses.reduce((s,e)=>s+Number(e.amount),0);
-      totalExpensesEl.textContent = fmt(totalExpenses);
-      totalIncomeEl.textContent = fmt(db.income||0);
-      balanceEl.textContent = fmt((db.income||0)-totalExpenses);
+        // expenses table
+        expensesTableBody.innerHTML =
+          monthExpenses
+            .sort((a, b) => b.date.localeCompare(a.date))
+            .map((e) => {
+              return `<tr data-id='${e.id}'><td>${escapeHtml(
+                e.date
+              )}</td><td>${escapeHtml(e.category)}</td><td>${escapeHtml(
+                e.note || ""
+              )}</td><td>${fmt(
+                e.amount
+              )}</td><td><button class='ghost del' data-id='${
+                e.id
+              }'>Del</button></td></tr>`;
+            })
+            .join("") ||
+          `<tr><td colspan='5' style='text-align:center;color:var(--muted)'>No expenses for this month</td></tr>`;
 
-      // expenses table
-      expensesTableBody.innerHTML = monthExpenses.sort((a,b)=>b.date.localeCompare(a.date)).map(e=>{
-        return `<tr data-id='${e.id}'><td>${escapeHtml(e.date)}</td><td>${escapeHtml(e.category)}</td><td>${escapeHtml(e.note||'')}</td><td>${fmt(e.amount)}</td><td><button class='ghost del' data-id='${e.id}'>Del</button></td></tr>`
-      }).join('') || `<tr><td colspan='5' style='text-align:center;color:var(--muted)'>No expenses for this month</td></tr>`;
+        // category totals
+        const byCat = {};
+        for (const c of db.categories) byCat[c] = 0;
+        for (const e of monthExpenses) {
+          if (!byCat[e.category]) byCat[e.category] = 0;
+          byCat[e.category] += Number(e.amount);
+        }
+        categoryTotals.innerHTML = Object.keys(byCat)
+          .map(
+            (c) =>
+              `<div style='display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.02)'><div>${escapeHtml(
+                c
+              )}</div><div>${fmt(byCat[c])}</div></div>`
+          )
+          .join("");
 
-      // category totals
-      const byCat = {};
-      for(const c of db.categories) byCat[c]=0;
-      for(const e of monthExpenses) { if(!byCat[e.category]) byCat[e.category]=0; byCat[e.category]+=Number(e.amount); }
-      categoryTotals.innerHTML = Object.keys(byCat).map(c=>`<div style='display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.02)'><div>${escapeHtml(c)}</div><div>${fmt(byCat[c])}</div></div>`).join('');
+        // chart
+        drawChart(byCat);
 
-      // chart
-      drawChart(byCat);
+        // persist UI bindings for delete category buttons
+        categoriesList.querySelectorAll("button").forEach((btn) =>
+          btn.addEventListener("click", () => {
+            const cat = btn.getAttribute("data-cat");
+            if (
+              confirm(
+                'Delete category "' +
+                  cat +
+                  '"?\nExisting expenses will keep the category text.'
+              )
+            ) {
+              db.categories = db.categories.filter((x) => x !== cat);
+              save();
+            }
+          })
+        );
 
-      // persist UI bindings for delete category buttons
-      categoriesList.querySelectorAll('button').forEach(btn=>btn.addEventListener('click', ()=>{ const cat=btn.getAttribute('data-cat'); if(confirm('Delete category "'+cat+'"?\nExisting expenses will keep the category text.')){ db.categories = db.categories.filter(x=>x!==cat); save(); }}));
+        // delete expense buttons
+        document.querySelectorAll(".del").forEach((btn) =>
+          btn.addEventListener("click", () => {
+            const id = btn.getAttribute("data-id");
+            db.expenses = db.expenses.filter((e) => e.id !== id);
+            save();
+          })
+        );
+      }
 
-      // delete expense buttons
-      document.querySelectorAll('.del').forEach(btn=>btn.addEventListener('click', ()=>{ const id=btn.getAttribute('data-id'); db.expenses = db.expenses.filter(e=>e.id!==id); save(); }))
-    }
+      function escapeHtml(s) {
+        return String(s)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;");
+      }
 
-    function escapeHtml(s){ return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;') }
+      // ---------------------- Chart (simple horizontal bar) ----------------------
+      function drawChart(byCat) {
+        const ctx = catChart.getContext("2d");
+        const width = (catChart.width =
+          catChart.clientWidth * devicePixelRatio);
+        const height = (catChart.height = 220 * devicePixelRatio);
+        ctx.clearRect(0, 0, width, height);
 
-    // ---------------------- Chart (simple horizontal bar) ----------------------
-    function drawChart(byCat){
-      const ctx = catChart.getContext('2d');
-      const width = catChart.width = catChart.clientWidth * devicePixelRatio;
-      const height = catChart.height = 220 * devicePixelRatio;
-      ctx.clearRect(0,0,width,height);
+        const entries = Object.entries(byCat).filter(([, v]) => v > 0);
+        if (entries.length === 0) {
+          ctx.font = `${14 * devicePixelRatio}px sans-serif`;
+          ctx.fillStyle = "rgba(255,255,255,0.12)";
+          ctx.fillText(
+            "No data to display",
+            20 * devicePixelRatio,
+            80 * devicePixelRatio
+          );
+          return;
+        }
 
-      const entries = Object.entries(byCat).filter(([,v])=>v>0);
-      if(entries.length===0){ ctx.font = `${14*devicePixelRatio}px sans-serif`; ctx.fillStyle='rgba(255,255,255,0.12)'; ctx.fillText('No data to display', 20*devicePixelRatio, 80*devicePixelRatio); return }
+        const total = entries.reduce((s, [, v]) => s + v, 0);
+        const barH = Math.floor(height / (entries.length * 1.4));
+        let y = 20 * devicePixelRatio;
+        const pad = 20 * devicePixelRatio;
+        entries
+          .sort((a, b) => b[1] - a[1])
+          .forEach(([cat, val], i) => {
+            const w = Math.max(
+              4,
+              (width - 160 * devicePixelRatio) * (val / total)
+            );
+            // background
+            ctx.fillStyle = "rgba(255,255,255,0.04)";
+            ctx.fillRect(pad, y, width - pad * 2, barH);
+            // bar
+            const hue = (i * 47) % 360;
+            ctx.fillStyle = `hsl(${hue} 80% 60% / 0.85)`;
+            ctx.fillRect(pad, y, w, barH);
+            // text
+            ctx.fillStyle = "#e6eef8";
+            ctx.font = `${12 * devicePixelRatio}px sans-serif`;
+            ctx.fillText(
+              cat,
+              pad + 6 * devicePixelRatio,
+              y + (barH / 2 + 4 * devicePixelRatio)
+            );
+            const valText = fmt(val);
+            ctx.fillText(
+              valText,
+              pad + w + 8 * devicePixelRatio,
+              y + (barH / 2 + 4 * devicePixelRatio)
+            );
+            y += barH * 1.4;
+          });
+      }
 
-      const total = entries.reduce((s,[,v])=>s+v,0);
-      const barH = Math.floor(height / (entries.length*1.4));
-      let y = 20*devicePixelRatio;
-      const pad = 20*devicePixelRatio;
-      entries.sort((a,b)=>b[1]-a[1]).forEach(([cat,val],i)=>{
-        const w = Math.max(4, (width - 160*devicePixelRatio) * (val/total));
-        // background
-        ctx.fillStyle = 'rgba(255,255,255,0.04)';
-        ctx.fillRect(pad, y, width - pad*2, barH);
-        // bar
-        const hue = (i*47) % 360;
-        ctx.fillStyle = `hsl(${hue} 80% 60% / 0.85)`;
-        ctx.fillRect(pad, y, w, barH);
-        // text
-        ctx.fillStyle = '#e6eef8';
-        ctx.font = `${12*devicePixelRatio}px sans-serif`;
-        ctx.fillText(cat, pad + 6*devicePixelRatio, y + (barH/2 + 4*devicePixelRatio));
-        const valText = fmt(val);
-        ctx.fillText(valText, pad + w + 8*devicePixelRatio, y + (barH/2 + 4*devicePixelRatio));
-        y += barH * 1.4;
-      })
-    }
+      // ---------------------- Events ----------------------
+      addExpenseBtn.addEventListener("click", () => {
+        const d = expenseDate.value || new Date().toISOString().slice(0, 10);
+        const amount = Number(expenseAmount.value || 0);
+        const category = expenseCategory.value || "Misc";
+        const note = expenseNote.value || "";
+        if (!amount || amount <= 0) {
+          alert("Enter an amount greater than 0");
+          return;
+        }
+        const item = {
+          id: uid(),
+          date: d,
+          amount: Number(amount),
+          category,
+          note,
+        };
+        db.expenses.push(item);
+        expenseAmount.value = "";
+        expenseNote.value = "";
+        save();
+      });
 
-    // ---------------------- Events ----------------------
-    addExpenseBtn.addEventListener('click', ()=>{
-      const d = expenseDate.value || (new Date()).toISOString().slice(0,10);
-      const amount = Number(expenseAmount.value || 0);
-      const category = expenseCategory.value || 'Misc';
-      const note = expenseNote.value || '';
-      if(!amount || amount<=0){ alert('Enter an amount greater than 0'); return }
-      const item = { id: uid(), date: d, amount: Number(amount), category, note };
-      db.expenses.push(item);
-      expenseAmount.value=''; expenseNote.value='';
-      save();
-    });
+      addQuickBtn.addEventListener("click", () => {
+        expenseAmount.value = "10";
+        expenseNote.value = "Quick expense";
+        addExpenseBtn.click();
+      });
 
-    addQuickBtn.addEventListener('click', ()=>{ expenseAmount.value='10'; expenseNote.value='Quick expense'; addExpenseBtn.click(); });
+      addCategoryBtn.addEventListener("click", () => {
+        const c = (newCategory.value || "").trim();
+        if (!c) return;
+        if (db.categories.includes(c)) {
+          alert("Category exists");
+          return;
+        }
+        db.categories.push(c);
+        newCategory.value = "";
+        save();
+      });
 
-    addCategoryBtn.addEventListener('click', ()=>{ const c = (newCategory.value||'').trim(); if(!c) return; if(db.categories.includes(c)){ alert('Category exists'); return } db.categories.push(c); newCategory.value=''; save(); });
+      saveIncomeBtn.addEventListener("click", () => {
+        const v = Number(monthlyIncome.value || 0);
+        db.income = v;
+        save();
+      });
+      currencySel.addEventListener("change", () => {
+        db.currency = currencySel.value;
+        save(false);
+      });
 
-    saveIncomeBtn.addEventListener('click', ()=>{ const v = Number(monthlyIncome.value||0); db.income = v; save(); });
-    currencySel.addEventListener('change', ()=>{ db.currency = currencySel.value; save(false); });
+      monthPicker.addEventListener("change", () => {
+        renderAll();
+      });
+      clearMonthBtn.addEventListener("click", () => {
+        clearMonth(monthPicker.value);
+      });
 
-    monthPicker.addEventListener('change', ()=>{ renderAll(); });
-    clearMonthBtn.addEventListener('click', ()=>{ clearMonth(monthPicker.value); });
+      exportJSON.addEventListener("click", () => {
+        const blob = new Blob([JSON.stringify(db, null, 2)], {
+          type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "pfm-data.json";
+        a.click();
+        URL.revokeObjectURL(url);
+      });
 
-    exportJSON.addEventListener('click', ()=>{ const blob = new Blob([JSON.stringify(db, null, 2)],{type:'application/json'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='pfm-data.json'; a.click(); URL.revokeObjectURL(url); });
+      importJSON.addEventListener("click", () => fileInput.click());
+      fileInput.addEventListener("change", (e) => {
+        const f = e.target.files[0];
+        if (!f) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const parsed = JSON.parse(reader.result);
+            if (!confirm("Replace current data with imported data?")) return;
+            db = parsed;
+            save();
+          } catch (err) {
+            alert("Invalid file");
+          }
+        };
+        reader.readAsText(f);
+      });
 
-    importJSON.addEventListener('click', ()=>fileInput.click());
-    fileInput.addEventListener('change', (e)=>{
-      const f = e.target.files[0]; if(!f) return; const reader = new FileReader(); reader.onload = ()=>{ try{ const parsed = JSON.parse(reader.result); if(!confirm('Replace current data with imported data?')) return; db = parsed; save(); }catch(err){ alert('Invalid file') } }; reader.readAsText(f);
-    });
+      clearData.addEventListener("click", () => resetAll());
 
-    clearData.addEventListener('click', ()=>resetAll());
+      undoBtn.addEventListener("click", () => {
+        if (undoStack.length < 2) {
+          alert("Nothing to undo");
+          return;
+        }
+        undoStack.pop();
+        const last = undoStack.pop();
+        if (last) {
+          db = JSON.parse(last);
+          save(false);
+        } else alert("Nothing to undo");
+      });
 
-    undoBtn.addEventListener('click', ()=>{ if(undoStack.length<2){ alert('Nothing to undo'); return } undoStack.pop(); const last = undoStack.pop(); if(last){ db = JSON.parse(last); save(false); } else alert('Nothing to undo'); });
+      downloadCSV.addEventListener("click", () => {
+        const rows = [["id", "date", "category", "note", "amount"]];
+        for (const e of db.expenses)
+          rows.push([e.id, e.date, e.category, e.note, e.amount]);
+        const csv = rows
+          .map((r) =>
+            r.map((c) => `"${String(c).replaceAll('"', '""')}"`).join(",")
+          )
+          .join("\n");
+        const blob = new Blob([csv], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "pfm-expenses.csv";
+        a.click();
+        URL.revokeObjectURL(url);
+      });
 
-    downloadCSV.addEventListener('click', ()=>{
-      const rows = [['id','date','category','note','amount']];
-      for(const e of db.expenses) rows.push([e.id,e.date,e.category,e.note,e.amount]);
-      const csv = rows.map(r=>r.map(c=>`"${String(c).replaceAll('"','""') }"`).join(',')).join('\n');
-      const blob = new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='pfm-expenses.csv'; a.click(); URL.revokeObjectURL(url);
-    });
+      // ---------------------- Initialization ----------------------
+      (function init() {
+        load();
+        // default month is current month
+        monthPicker.value = new Date().toISOString().slice(0, 7);
+        // default expense date is today
+        expenseDate.value = new Date().toISOString().slice(0, 10);
+        renderAll();
+      })();
 
-    // ---------------------- Initialization ----------------------
-    (function init(){
-      load();
-      // default month is current month
-      monthPicker.value = (new Date()).toISOString().slice(0,7);
-      // default expense date is today
-      expenseDate.value = (new Date()).toISOString().slice(0,10);
-      renderAll();
-    })();
-
-    // ---------------------- Helpers ----------------------
-    // Keep canvas sharp when resizing
-    let resizeTimer;
-    window.addEventListener('resize', ()=>{ clearTimeout(resizeTimer); resizeTimer=setTimeout(()=>renderAll(),160); });
-  </script>
-</body>
+      // ---------------------- Helpers ----------------------
+      // Keep canvas sharp when resizing
+      let resizeTimer;
+      window.addEventListener("resize", () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => renderAll(), 160);
+      });
+    </script>
+  </body>
 </html>
