@@ -5,21 +5,42 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Monthly Cost - Personal Finance Manager (Single File)</title>
     <style>
-      :root {
-        --bg: #0f1724;
-        --card: #0b1220;
-        --accent: #60a5fa;
-        --muted: #9ca3af;
-        --success: #10b981;
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #e2e8f2;
+          --card: #dde2ed;
+          --accent: #60a5fa;
+          --muted: #525861;
+          --success: #10b981;
+          --body-bg: linear-gradient(180deg, #e8f0ff 0%, #f4f7ff 100%);
+          --title-color: black;
+        }
       }
-      * {
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0f1724;
+          --card: #0b1220;
+          --accent: #60a5fa;
+          --muted: #9ca3af;
+          --success: #10b981;
+          --body-bg: linear-gradient(180deg, #071025 0%, #071428 100%);
+          --title-color: white;
+        }
+      }
+
+      *,
+      *::after,
+      *::before {
         box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
       body {
         font-family: Inter, ui-sans-serif, system-ui, Segoe UI, Roboto,
           Helvetica, Arial;
         margin: 0;
-        background: linear-gradient(180deg, #071025 0%, #071428 100%);
+        background: var(--body-bg);
         color: #e6eef8;
       }
       .container {
@@ -36,6 +57,7 @@
       header h1 {
         font-size: 20px;
         margin: 0;
+        color: var(--title-color);
       }
       .grid {
         display: grid;
