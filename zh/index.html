@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Monthly Cost - Personal Finance Manager (Single File)</title>
+    <title>每月支出 - 個人財務管理器（單一檔案）</title>
     <style>
       @media (prefers-color-scheme: light) {
         :root {
@@ -187,9 +187,9 @@
   <body>
     <div class="container">
       <header>
-        <h1>Monthly Cost — Personal Finance Manager</h1>
+        <h1>每月支出 — 個人財務管理器</h1>
         <div style="margin-left: auto; color: var(--muted); font-size: 13px">
-          Single file · localStorage only · no external libs
+          單一檔案 · 僅使用 localStorage · 無外部程式庫
         </div>
       </header>
 
@@ -197,16 +197,16 @@
         <main class="card">
           <div class="flex-between">
             <div>
-              <label for="monthPicker">Month</label>
+              <label for="monthPicker">月份</label>
               <input id="monthPicker" type="month" />
             </div>
             <div style="min-width: 220px">
-              <label for="currency">Currency</label>
+              <label for="currency">貨幣</label>
               <select id="currency">
-                <option value="$">USD ($)</option>
-                <option value="€">EUR (€)</option>
-                <option value="NT$">TWD (NT$)</option>
-                <option value="¥">CNY (¥)</option>
+                <option value="%24">美元 ($)</option>
+                <option value="€">歐元 (€)</option>
+                <option value="NT$">台幣 (NT$)</option>
+                <option value="¥">人民幣 (¥)</option>
               </select>
             </div>
           </div>
@@ -214,19 +214,15 @@
           <section style="margin-top: 12px">
             <div class="stats">
               <div class="stat">
-                <div style="color: var(--muted); font-size: 12px">
-                  Monthly Income
-                </div>
+                <div style="color: var(--muted); font-size: 12px">每月收入</div>
                 <h3 id="totalIncome">—</h3>
               </div>
               <div class="stat">
-                <div style="color: var(--muted); font-size: 12px">
-                  Total Expenses
-                </div>
+                <div style="color: var(--muted); font-size: 12px">總支出</div>
                 <h3 id="totalExpenses">—</h3>
               </div>
               <div class="stat">
-                <div style="color: var(--muted); font-size: 12px">Balance</div>
+                <div style="color: var(--muted); font-size: 12px">結餘</div>
                 <h3 id="balance">—</h3>
               </div>
             </div>
@@ -234,31 +230,31 @@
 
           <section style="display: flex; gap: 12px; flex-wrap: wrap">
             <div style="flex: 1; min-width: 260px">
-              <h4 style="margin: 6px 0 8px 0">Add expense</h4>
+              <h4 style="margin: 6px 0 8px 0">新增支出</h4>
               <div class="row">
                 <input id="expenseDate" type="date" />
                 <input
                   id="expenseAmount"
                   type="number"
                   step="0.01"
-                  placeholder="amount"
+                  placeholder="金額"
                 />
               </div>
               <div style="margin-top: 8px" class="row">
                 <select id="expenseCategory"></select>
-                <input id="expenseNote" placeholder="note (optional)" />
+                <input id="expenseNote" placeholder="備註（可選）" />
               </div>
               <div style="margin-top: 8px; display: flex; gap: 8px">
-                <button id="addExpenseBtn">Add Expense</button>
-                <button id="addQuickBtn" class="ghost">Quick: -$10</button>
+                <button id="addExpenseBtn">新增支出</button>
+                <button id="addQuickBtn" class="ghost">快速：-$10</button>
               </div>
             </div>
 
             <div style="width: 320px; min-width: 220px">
-              <h4 style="margin: 6px 0 8px 0">Manage categories</h4>
+              <h4 style="margin: 6px 0 8px 0">管理分類</h4>
               <div class="row">
-                <input id="newCategory" placeholder="New category" />
-                <button id="addCategoryBtn" class="ghost">Add</button>
+                <input id="newCategory" placeholder="新增分類" />
+                <button id="addCategoryBtn" class="ghost">新增</button>
               </div>
               <div class="list-small" id="categoriesList"></div>
             </div>
@@ -267,12 +263,12 @@
           <section style="margin-top: 12px">
             <div class="flex-between">
               <h4 style="margin: 6px 0">
-                Expenses — <span id="monthLabel"></span>
+                支出紀錄 — <span id="monthLabel"></span>
               </h4>
               <div class="controls">
-                <button id="exportJSON" class="ghost">Export JSON</button>
-                <button id="importJSON" class="ghost">Import</button>
-                <button id="clearData" class="ghost">Reset</button>
+                <button id="exportJSON" class="ghost">匯出 JSON</button>
+                <button id="importJSON" class="ghost">匯入</button>
+                <button id="clearData" class="ghost">重置</button>
                 <input
                   type="file"
                   id="fileInput"
@@ -286,10 +282,10 @@
               <table id="expensesTable">
                 <thead>
                   <tr>
-                    <th>Date</th>
-                    <th>Category</th>
-                    <th>Note</th>
-                    <th>Amount</th>
+                    <th>日期</th>
+                    <th>分類</th>
+                    <th>備註</th>
+                    <th>金額</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -302,7 +298,7 @@
             style="margin-top: 12px; display: flex; gap: 12px; flex-wrap: wrap"
           >
             <div style="flex: 1" class="card">
-              <h4 style="margin: 6px 0">Breakdown by category</h4>
+              <h4 style="margin: 6px 0">分類支出圖表</h4>
               <canvas
                 id="catChart"
                 width="600"
@@ -312,7 +308,7 @@
             </div>
 
             <div style="width: 300px; min-width: 220px" class="card">
-              <h4 style="margin: 6px 0">Category totals</h4>
+              <h4 style="margin: 6px 0">分類總計</h4>
               <div id="categoryTotals"></div>
             </div>
           </section>
@@ -320,8 +316,8 @@
 
         <aside>
           <div class="card">
-            <h3 style="margin-top: 0">Settings & Data</h3>
-            <label for="monthlyIncome">Set monthly income</label>
+            <h3 style="margin-top: 0">設定與資料</h3>
+            <label for="monthlyIncome">設定每月收入</label>
             <input
               id="monthlyIncome"
               type="number"
@@ -329,8 +325,8 @@
               placeholder="0.00"
             />
             <div style="margin-top: 8px; display: flex; gap: 8px">
-              <button id="saveIncomeBtn">Save</button>
-              <button id="clearMonthBtn" class="ghost">Clear Month</button>
+              <button id="saveIncomeBtn">儲存</button>
+              <button id="clearMonthBtn" class="ghost">清除當月</button>
             </div>
 
             <hr
@@ -341,34 +337,35 @@
               "
             />
 
-            <h4 style="margin: 6px 0">Quick actions</h4>
+            <h4 style="margin: 6px 0">快速操作</h4>
             <div style="display: flex; flex-direction: column; gap: 8px">
-              <button id="undoBtn" class="ghost">Undo last</button>
-              <button id="downloadCSV" class="ghost">Download CSV</button>
+              <button id="undoBtn" class="ghost">復原上一筆</button>
+              <button id="downloadCSV" class="ghost">下載 CSV</button>
             </div>
           </div>
 
           <div style="height: 12px"></div>
           <div class="card" style="text-align: center">
             <div style="font-size: 13px; color: var(--muted)">
-              Data stored only in this browser (localStorage).
+              資料僅儲存於此瀏覽器（localStorage）。
             </div>
             <div style="margin-top: 8px; color: var(--muted); font-size: 12px">
-              Tip: Export your data to back it up.
+              小提示：請記得匯出資料作為備份。
             </div>
           </div>
         </aside>
       </div>
 
       <footer>
-        Built as a single-file app. You can save this page as
-        <code>finance.html</code> and open it in any browser.
+        本工具為單一檔案應用程式。你可以將此頁面另存為
+        <code>finance.html</code> 並在任何瀏覽器開啟。
       </footer>
     </div>
 
     <script>
       // ---------------------- Data layer ----------------------
       const STORAGE_KEY = "pfm_data_v1";
+
       const initData = {
         income: 0,
         currency: "NT$",
@@ -478,7 +475,7 @@
                 c
               )}</div><div><button class='ghost' data-cat='${escapeHtml(
                 c
-              )}'>Del</button></div></div>`
+              )}'>刪除</button></div></div>`
           )
           .join("");
 
@@ -539,11 +536,7 @@
         categoriesList.querySelectorAll("button").forEach((btn) =>
           btn.addEventListener("click", () => {
             const cat = btn.getAttribute("data-cat");
-            if (
-              confirm(
-                `Delete category "${cat}"?\nExisting expenses will keep the category text.`
-              )
-            ) {
+            if (confirm(`刪除分類「${cat}」？\n現有支出將保留原分類文字。`)) {
               db.categories = db.categories.filter((x) => x !== cat);
               save();
             }
